@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
     const [users] = await db.execute( `SELECT id, username, email, role, created_at FROM users ORDER BY id ASC`);
     const [decks] = await db.execute(` SELECT id, user_id, name, commander_card_id, created_at AS createdAt, updated_at AS updatedAt FROM decks ORDER BY user_id ASC, updated_at DESC ` );
 
-    return json({success: true, users, decks});
+    return json({success: true, users, userDecks : decks});
   } catch (error) {
     console.error('Failed to load admin data:', error);
 
