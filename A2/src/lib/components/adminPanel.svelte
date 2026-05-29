@@ -4,6 +4,7 @@
   import { selectedDeck } from '$lib/stores/selectedDeck';
   import { deckStore } from '$lib/stores/deck';
   import { rightPanelView } from '$lib/stores/ui';
+  import { onMount } from 'svelte';
 
   type AdminUser = {
     id: number;
@@ -178,12 +179,14 @@
     }
   }
 
-  function getDecksForUser(userId: number) { return userDecks.filter((deck) => deck.user_id === userId); }
+function getDecksForUser(userId: number) {return (userDecks ?? []).filter((deck) => deck.user_id === userId);}
+onMount(() => {if ($user?.role === 'admin') { loadAdminData(); } else {
+    message = 'Admin access required.';
+    greatSuccess = false;
+    isLoading = false;
+  }
+});
 
-  $effect(() => {
-    if ($user?.role === 'admin') {
-      loadAdminData();
-    }});
 </script>
 
 <section class="admin-panel">
